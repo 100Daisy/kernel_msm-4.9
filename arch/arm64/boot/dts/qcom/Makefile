@@ -2,6 +2,10 @@
 #dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-mtp.dtb
 #dtb-$(CONFIG_ARCH_QCOM)	+= apq8096-db820c.dtb
 
+# Add 1k of padding to the DTBs to allow for environment variables
+# to be runtime added by the bootloader (i.e. /chosen properties)
+DTC_FLAGS += -p 1024 -f
+
 dtb-$(CONFIG_DEEN_DTB) += msm8953-deen-evt1.dtb \
 	msm8953-deen-evt2.dtb \
 	msm8953-deen-dvt1a.dtb \
