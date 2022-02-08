@@ -1,4 +1,4 @@
-/* Copyright (c) 2014-2015, 2018 The Linux Foundation. All rights reserved.
+/* Copyright (c) 2014-2015, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -47,12 +47,6 @@
 			regulator-max-microvolt = <7>;
 			qcom,init-voltage = <1>;
 			qcom,use-voltage-corner;
-		};
-		pm8909_cx_cdev: regulator-cx-cdev {
-			compatible = "qcom,regulator-cooling-device";
-			regulator-cdev-supply = <&pm8909_s1_floor_corner>;
-			regulator-levels = <5 1>;
-			#cooling-cells = <2>;
 		};
 	};
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -11,12 +11,12 @@
  * GNU General Public License for more details.
  */
 
-#include "apq8053-lite.dtsi"
+
+#include "msm8953-mdss-panels.dtsi"
+#include "msm-pmi8950.dtsi"
+#include "msm8953-pmi8950.dtsi"
 #include "msm8953-pinctrl.dtsi"
 #include "apq8053-camera-sensor-dragon.dtsi"
-#include "pmi8950.dtsi"
-#include "msm8953-pmi8950.dtsi"
-#include "apq8053-dragon-memory.dtsi"
 
 &soc {
 	vreg_5p0: vreg_5p0 {
@@ -65,6 +65,38 @@
 		enable-active-high;
 	};
 
+	gpio_keys {
+		compatible = "gpio-keys";
+		input-name = "gpio-keys";
+		pinctrl-names = "tlmm_gpio_key_active","tlmm_gpio_key_suspend";
+		pinctrl-0 = <&gpio_key_active>;
+		pinctrl-1 = <&gpio_key_suspend>;
+
+		camera_focus {
+			label = "camera_focus";
+			gpios = <&tlmm 87 0x1>;
+			linux,input-type = <1>;
+			linux,code = <0x210>;
+			debounce-interval = <15>;
+		};
+
+		camera_snapshot {
+			label = "camera_snapshot";
+			gpios = <&tlmm 86 0x1>;
+			linux,input-type = <1>;
+			linux,code = <0x2fe>;
+			debounce-interval = <15>;
+		};
+
+		vol_up {
+			label = "volume_up";
+			gpios = <&tlmm 85 0x1>;
+			linux,input-type = <1>;
+			linux,code = <115>;
+			debounce-interval = <15>;
+		};
+	};
+
 	cnss_sdio: qcom,cnss_sdio {
 		compatible = "qcom,cnss_sdio";
 		subsys-name = "AR6320";
@@ -88,69 +120,6 @@
 	bluetooth: bt_qca9379 {
 		compatible = "qca,qca6174";
 		qca,bt-reset-gpio = <&tlmm 76 0>; /* BT_EN */
-	};
-
-	cdc_dmic_gpios: cdc_dmic_pinctrl {
-		compatible = "qcom,msm-cdc-pinctrl";
-		pinctrl-names = "aud_active", "aud_sleep";
-		pinctrl-0 = <&cdc_dmic0_clk_act &cdc_dmic0_data_act>;
-		pinctrl-1 = <&cdc_dmic0_clk_sus &cdc_dmic0_data_sus>;
-	};
-
-	cdc_quat_mi2s_gpios: msm_cdc_pinctrl_quat {
-		compatible = "qcom,msm-cdc-pinctrl";
-		pinctrl-names = "aud_active", "aud_sleep";
-		pinctrl-0 = <&sec_tlmm_lines_act &ext_amp_ctrl_active>;
-		pinctrl-1 = <&sec_tlmm_lines_sus &ext_amp_ctrl_sleep>;
-	};
-
-	qcom,rmnet-ipa {
-		status = "disabled";
-	};
-
-	qcom,qca402x {
-		compatible = "qcom,qca402";
-		endpoints = <1>;
-	};
-};
-
-&cdc_pdm_comp_lines_act {
-	mux {
-		pins = "gpio67";
-		function = "cdc_pdm0";
-	};
-
-	config {
-		pins = "gpio67";
-		drive-strength = <8>;
-	};
-};
-
-&cdc_pdm_comp_lines_sus {
-	mux {
-		pins = "gpio67";
-		function = "cdc_pdm0";
-	};
-
-	config {
-		pins = "gpio67";
-		drive-strength = <2>;
-		bias-disable;
-	};
-};
-
-&firmware {
-	android {
-		vbmeta {
-			compatible = "android,vbmeta";
-			parts = "vbmeta,boot,system,vendor,bluetooth,modem,dsp,oem";
-		};
-		fstab {
-			/delete-node/ system;
-			vendor {
-				fsmgr_flags = "wait,slotselect,avb";
-			};
-		};
 	};
 };
 
@@ -177,7 +146,7 @@
 
 &int_codec {
 	status = "ok";
-	qcom,model = "msm8953-openq624-snd-card";
+	qcom,model = "msm8953-snd-card-mtp";
 
 	/delete-property/ qcom,cdc-us-euro-gpios;
 	qcom,msm-hs-micbias-type = "internal";
@@ -193,12 +162,9 @@
 		"AMIC2", "MIC BIAS Internal2",
 		"AMIC3", "MIC BIAS Internal1",
 		"DMIC1", "MIC BIAS Internal1",
-		"MIC BIAS Internal1", "Digital Mic1",
+		"DMIC1", "Digital Mic1",
 		"DMIC2", "MIC BIAS Internal1",
-		"MIC BIAS Internal1", "Digital Mic2";
-
-	qcom,quat-mi2s-gpios = <&cdc_quat_mi2s_gpios>;
-	qcom,cdc-dmic-gpios = <&cdc_dmic_gpios>;
+		"DMIC2", "Digital Mic2";
 
 	/delete-property/ asoc-wsa-codec-names;
 	/delete-property/ asoc-wsa-codec-prefixes;
@@ -206,54 +172,50 @@
 	/delete-property/ qcom,msm-vdd-wsa-switch-voltage;
 	/delete-property/ qcom,msm-vdd-wsa-switch-current;
 };
+
+&pm8953_diangu_dig {
+	status = "ok";
+};
+&pm8953_diangu_analog {
+	status = "ok";
+};
+
+&wsa881x_211 {
+	/delete-property/ qcom,spkr-sd-n-gpio;
+};
+&wsa881x_212 {
+	/delete-property/ qcom,spkr-sd-n-gpio;
+};
+&wsa881x_213 {
+	/delete-property/ qcom,spkr-sd-n-gpio;
+};
+&wsa881x_214 {
+	/delete-property/ qcom,spkr-sd-n-gpio;
+};
+
 &spi_3 {
 	status = "disabled";
 };
 
-&i2c_1 {
-	status = "okay";
-};
-
 &i2c_2 {
-	status = "okay";
+	status = "disabled";
 };
 
 &i2c_3 {
-	status = "okay";
-	himax_ts@48 {
-		compatible = "himax,hxcommon";
-		reg = <0x48>;
-		interrupt-parent = <&tlmm>;
-		interrupts = <65 0x2>;
-		vdd-supply = <&pm8953_l10>;
-		avdd-supply = <&pm8953_l5>;
-		pinctrl-names = "pmx_ts_active","pmx_ts_suspend",
-					"pmx_ts_release";
-		pinctrl-0 = <&ts_int_active &ts_reset_active>;
-		pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
-		pinctrl-2 = <&ts_release>;
-		himax,panel-coords = <0 800 0 1280>;
-		himax,display-coords = <0 800 0 1280>;
-		himax,irq-gpio = <&tlmm 65 0x2008>;
-		report_type = <1>;
-	};
-};
-
-&soc {
-	/delete-node/ hbtp;
+	status = "ok";
 };
 
 &i2c_5 {
 	status = "disabled";
 };
 
-#include "msm8953-mdss-panels.dtsi"
+
 &mdss_mdp {
 	qcom,mdss-pref-prim-intf = "dsi";
 };
 
 &mdss_dsi {
-	hw-config = "single_dsi";
+	hw-config = "dual_dsi";
 };
 
 &mdss_dsi_active {
@@ -284,15 +246,15 @@
 };
 
 &mdss_dsi0 {
-	qcom,dsi-pref-prim-pan = <&dsi_boyi_hx83100a_800p_video>;
+	qcom,dsi-pref-prim-pan = <&dsi_truly_1080_vid>;
 	pinctrl-names = "mdss_default", "mdss_sleep";
 	pinctrl-0 = <&mdss_dsi_active &mdss_te_active>;
 	pinctrl-1 = <&mdss_dsi_suspend &mdss_te_suspend>;
 
 	vdd-supply = <&pm8953_l10>;
 	vddio-supply = <&pm8953_l6>;
-	lab-supply = <&lab_regulator>;
-	ibb-supply = <&ibb_regulator>;
+	/delete-property/ lab-supply;
+	/delete-property/ ibb-supply;
 
 	qcom,platform-te-gpio = <&tlmm 24 0>;
 	qcom,platform-reset-gpio = <&tlmm 61 0>;
@@ -300,22 +262,51 @@
 };
 
 &mdss_dsi1 {
-	status = "disabled";
+	qcom,dsi-pref-prim-pan = <&dsi_adv7533_1080p>;
+	qcom,bridge-index = <0>;
+	qcom,pluggable;
+
+	vdd-supply = <&pm8953_l4>;
+	vddio-supply = <&pm8953_l5>;
+
+	/delete-property/ lab-supply;
+	/delete-property/ ibb-supply;
 };
 
-&labibb {
-	status = "okay";
-	qpnp,qpnp-labibb-mode = "lcd";
+&soc {
+	dsi_panel_pwr_supply_no_labibb: dsi_panel_pwr_supply_no_labibb {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vdd";
+			qcom,supply-min-voltage = <2850000>;
+			qcom,supply-max-voltage = <2850000>;
+			qcom,supply-enable-load = <100000>;
+			qcom,supply-disable-load = <100>;
+		};
+
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <100000>;
+			qcom,supply-disable-load = <100>;
+			qcom,supply-post-on-sleep = <20>;
+		};
+	};
 };
 
-&wled {
-	qcom,cons-sync-write-delay-us = <1000>;
-	qcom,led-strings-list = [00 01 02 03];
-};
 &blsp1_uart0 {
 	status = "ok";
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart_console_active>;
+};
+
+&mem_client_3_size {
+	qcom,peripheral-size = <0x500000>;
 };
 
 &sdhc_1 {
@@ -371,35 +362,43 @@
 };
 
 &sdhc_2 {
+	/* device core power supply */
+	vdd-supply = <&pm8953_l11>;
+	qcom,vdd-voltage-level = <2950000 2950000>;
+	qcom,vdd-current-level = <15000 800000>;
+
 	/* device communication power supply */
 	vdd-io-supply = <&pm8953_l12>;
 	qcom,vdd-io-always-on;
 	qcom,vdd-io-voltage-level = <1800000 1800000>;
 	qcom,vdd-io-current-level = <200 22000>;
-
 	qcom,core_3_0v_support;
 	qcom,nonremovable;
 
 	pinctrl-names = "active", "sleep";
-	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_wlan_gpio_on>;
-	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off
-		 &sdc2_wlan_gpio_off>;
+	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on \
+			&sdc2_wlan_gpio_on>;
+	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off \
+			&sdc2_wlan_gpio_off>;
 
-	qcom,clk-rates = <400000 20000000 25000000 50000000 100000000>;
+	#address-cells = <0>;
+	interrupt-parent = <&sdhc_2>;
+	interrupts = <0 1 2>;
+	#interrupt-cells = <1>;
+	interrupt-map-mask = <0xffffffff>;
+	interrupt-map = <0 &intc 0 125 0
+		1 &intc 0 221 0
+		2 &tlmm 114 0x1>;
+	interrupt-names = "hc_irq", "pwr_irq", "sdiowakeup_irq";
+
+	qcom,clk-rates = <400000 20000000 25000000 50000000 100000000
+				177770000>;
 	qcom,bus-speed-mode = "SDR12", "SDR25", "SDR50", "DDR50", "SDR104";
 
 	status = "ok";
 };
 
 &spmi_bus {
-	qcom,pm8953@0 {
-		qcom,power-on@800 {
-			qcom,resin-gpiobase = <1019>;
-			qcom,pon_2 {
-				/delete-property/ linux,code;
-			};
-		};
-	};
 	qcom,pmi8950@2 {
 		qcom,leds@a100 {
 			compatible = "qcom,leds-qpnp";
@@ -456,12 +455,30 @@
 	};
 };
 
+&pmi8950_charger {
+	qcom,battery-data = <&mtp_batterydata>;
+	qcom,chg-led-sw-controls;
+	qcom,chg-led-support;
+	qcom,external-typec;
+	qcom,typec-psy-name = "typec";
+	status = "ok";
+};
+
+&pmi8950_fg {
+	qcom,battery-data = <&mtp_batterydata>;
+};
+
 &pmi_haptic{
 	status = "disabled";
+	qcom,actuator-type = "lra";
 	qcom,lra-auto-res-mode="qwd";
 	qcom,lra-high-z="opt1";
 	qcom,lra-res-cal-period = <0>;
 	qcom,wave-play-rate-us = <4165>;
+};
+
+&wled {
+	status = "disabled";
 };
 
 &flash_led {
@@ -477,62 +494,82 @@
 };
 
 &pmi8950_gpios {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pmi_gpio1_default>;
-	pmi_gpio1_default: pmi8950_gpio1 {
-		pins = "gpio1";
-		function = "normal";
-		input-enable;
-		power-source = <0>;
-		status = "okay";
+	gpio@c000 {	/* GPIO_1 */
+		status = "ok";
 	};
 };
 
 &pmi8950_mpps {
-	pinctrl-names = "default";
-	pinctrl-0 = <&ext_fet_wled_pwr_en_default>;
-	ext_fet_wled_pwr_en_default: pmi8950_mpp3 {
-		pins = "mpp3";  /* MPP_3 */
-		function = "digital"; /* Digital */
-		output-high; /* Output */
-		drive-strength = <2>; /* 1.8 mA */
-		power-source = <1>;
-		bias-disable = <0>; /* no pull */
-		status = "okay";
+	mpp@a200 {	/* MPP_3 */
+		qcom,mode = <1>;		/* Digital output */
+		qcom,output-type = <0>;	/* CMOS logic */
+		qcom,vin-sel = <2>;		/* 1.8V */
+		qcom,src-sel = <0>;		/* Constant */
+		qcom,master-en = <1>;	/* Enable GPIO */
+		qcom,invert = <0>;
+		status = "ok";
 	};
 };
 
 &pm8953_gpios {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pm_gpio1_div_clk2_default>;
-	pm_gpio1_div_clk2_default: pm8953_gpio1 {
-		pins = "gpio1";
-		function = "normal";
-		output-high;
-		power-source = <1>;
-		status = "okay";
+	gpio@c000 {	/* GPIO_1 */
+		status = "ok";
 	};
 };
 
 &pm8953_mpps {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pm_mpp4_wled_pwm_ctrl_default>;
-	pm_mpp4_wled_pwm_ctrl_default: pm8953_mpp4 {
-		pins = "mpp4"; /* WLED_PWM_CTRL */
-		function = "digital"; /* Digital */
-		output-high;	/* Output */
-		drive-strength = <2>; /* 1.8 mA */
-		power-source = <0>; /* VPH_PWR */
-		qcom,dtest = <1>; /* DTEST1 */
-		bias-disable = <0>; /* no pull */
-		status = "okay";
+	mpp@a000 {	/* MPP_1 */		/* VDD_PX */
+		status = "disabled";
+	};
+	mpp@a100 {	/* MPP_2 */
+		status = "disabled";
+	};
+	mpp@a200 {	/* MPP_3 */
+		status = "disabled";
+	};
+
+	mpp@a300 {	/* MPP_4 */		/* WLED_PWM_CTRL */
+		qcom,mode = <1>;		/* Digital output */
+		qcom,output-type = <0>;	/* CMOS logic */
+		qcom,vin-sel = <0>;		/* VPH_PWR */
+		qcom,src-sel = <4>;		/* DTEST1 */
+		qcom,master-en = <1>;	/* Enable GPIO */
+		qcom,invert = <0>;
+		status = "ok";
 	};
 };
 
-&ipa_hw {
-	status = "disabled";
+&soc {
+	qcom,wcnss-wlan@0a000000 {
+		status = "disabled";
+	};
+
+	qcom,pronto@a21b000 {
+		status = "disabled";
+	};
 };
 
-&msm_gpu {
-	/delete-node/ qcom,gpu-mempools;
+&firmware {
+	android {
+		compatible = "android,firmware";
+		fstab {
+			compatible = "android,fstab";
+			vendor {
+				compatible = "android,vendor";
+				dev = "/dev/block/platform/soc/7824900.sdhci/by-name/vendor";
+				type = "ext4";
+				mnt_flags = "ro,barrier=1,discard";
+				fsmgr_flags = "wait";
+				status = "ok";
+			};
+			system {
+				compatible = "android,system";
+				dev = "/dev/block/platform/soc/7824900.sdhci/by-name/system";
+				type = "ext4";
+				mnt_flags = "ro,barrier=1,discard";
+				fsmgr_flags = "wait";
+				status = "ok";
+			};
+		};
+	};
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, 2017, 2020, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2014-2015, 2017, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -10,6 +10,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
 &soc {
 	qcom,msm-cam@1800000{
 		compatible = "qcom,msm-cam";
@@ -181,9 +182,9 @@
 	qcom,cam_smmu {
 		status = "ok";
 		compatible = "qcom,msm-cam-smmu";
-		msm_cb1: msm_cb1 {
-			compatible = "qcom,msm-cam-smmu-cb";
-			iommus = <&apps_iommu 0x400 0x0>;
+		msm_cam_smmu_cb1: msm_cam_smmu_cb1 {
+			compatible = "qcom,qsmmu-cam-cb";
+			iommus = <&apps_iommu 0x400>;
 			label = "vfe";
 			qcom,scratch-buf-support;
 		};

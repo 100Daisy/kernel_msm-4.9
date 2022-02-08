@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2016-2017, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -110,101 +110,6 @@
 		qcom,bw-dwnstep = <4000>;
 		qcom,max-vote = <4000>;
 	};
-
-	/delete-node/ funnel@6120000;
-	funnel_right: funnel@6120000 {
-		compatible = "arm,primecell";
-		arm,primecell-periphid = <0x0003b908>;
-
-		reg = <0x6120000 0x1000>;
-		reg-names = "funnel-base";
-
-		coresight-name = "coresight-funnel-right";
-
-		clocks = <&clock_gcc clk_qdss_clk>,
-			 <&clock_gcc clk_qdss_a_clk>;
-		clock-names = "apb_pclk";
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				funnel_right_out_funnel_in0: endpoint {
-					remote-endpoint =
-						<&funnel_in0_in_funnel_right>;
-				};
-			};
-
-			port@1 {
-				reg = <1>;
-				funnel_right_in_modem_etm1: endpoint {
-					slave-mode;
-					remote-endpoint =
-						<&modem_etm1_out_funnel_right>;
-				};
-			};
-
-			port@2 {
-				reg = <2>;
-				funnel_right_in_modem_etm0: endpoint {
-					slave-mode;
-					remote-endpoint =
-						<&modem_etm0_out_funnel_right>;
-				};
-			};
-
-			port@3 {
-				reg = <3>;
-				funnel_right_in_funnel_apss: endpoint {
-					slave-mode;
-					remote-endpoint =
-					       <&funnel_apss_out_funnel_right>;
-				};
-			};
-		};
-	};
-
-	/delete-node/ cti@6124000;
-	cti_modem_cpu0: cti@6128000{
-		compatible = "arm,primecell";
-		arm,primecell-periphid = <0x0003b966>;
-
-		reg = <0x6128000 0x1000>;
-		reg-names = "cti-base";
-		coresight-name = "coresight-cti-modem-cpu0";
-
-		clocks = <&clock_gcc clk_qdss_clk>,
-			 <&clock_gcc clk_qdss_a_clk>;
-		clock-names = "apb_pclk";
-	};
-
-
-	cti_modem_cpu1: cti@6124000{
-		compatible = "arm,primecell";
-		arm,primecell-periphid = <0x0003b966>;
-
-		reg = <0x6124000 0x1000>;
-		reg-names = "cti-base";
-		coresight-name = "coresight-cti-modem-cpu1";
-
-		clocks = <&clock_gcc clk_qdss_clk>,
-			 <&clock_gcc clk_qdss_a_clk>;
-		clock-names = "apb_pclk";
-	};
-
-	modem_etm1 {
-		compatible = "qcom,coresight-remote-etm";
-		coresight-name = "coresight-modem-etm1";
-		qcom,inst-id = <11>;
-
-		port {
-			modem_etm1_out_funnel_right: endpoint {
-				remote-endpoint = <&funnel_right_in_modem_etm1>;
-			};
-		};
-	};
-
 };
 
 &clock_gcc {
@@ -587,9 +492,62 @@
 	reg = <0x0 0x8e300000 0x0 0x700000>;
 };
 
+&funnel_apss {
+	coresight-child-ports = <3>;
+};
+
+/* MSS_SCL */
+&modem_etm0 {
+	coresight-child-ports = <2>;
+};
 &pil_mss {
 	/delete-property/ qcom,qdsp6v56-1-8-inrush-current;
 	qcom,qdsp6v56-1-8;
+};
+
+&soc {
+	/delete-node/ cti@6124000;
+	cti_modem_cpu0: cti@6128000{
+		compatible = "arm,coresight-cti";
+		reg = <0x6128000 0x1000>;
+		reg-names = "cti-base";
+
+		coresight-id = <59>;
+		coresight-name = "coresight-cti-modem-cpu0";
+		coresight-nr-inports = <0>;
+
+		clocks = <&clock_gcc clk_qdss_clk>,
+			 <&clock_gcc clk_qdss_a_clk>;
+		clock-names = "core_clk", "core_a_clk";
+	};
+
+	cti_modem_cpu1: cti@6124000{
+		compatible = "arm,coresight-cti";
+		reg = <0x6124000 0x1000>;
+		reg-names = "cti-base";
+
+		coresight-id = <60>;
+		coresight-name = "coresight-cti-modem-cpu1";
+		coresight-nr-inports = <0>;
+
+		clocks = <&clock_gcc clk_qdss_clk>,
+			 <&clock_gcc clk_qdss_a_clk>;
+		clock-names = "core_clk", "core_a_clk";
+	};
+
+	/* MSS_VEC */
+	modem_etm1 {
+		compatible = "qcom,coresight-remote-etm";
+
+		coresight-id = <61>;
+		coresight-name = "coresight-modem-etm1";
+		coresight-nr-inports = <0>;
+		coresight-outports = <0>;
+		coresight-child-list = <&funnel_right>;
+		coresight-child-ports = <1>;
+
+		qcom,inst-id = <11>;
+	};
 };
 
 /* GPU overrides */
@@ -756,7 +714,7 @@
 	};
 };
 
-&tsens0 {
+&tsens {
 	qcom,temp1-offset = <0 (-2) (-5) (-3) (-1) (-1) (-1) 0 1 (-1) (-6)>;
 	qcom,temp2-offset = <1 1 (-7) 5 4 7 6 2 3 1 7>;
 };

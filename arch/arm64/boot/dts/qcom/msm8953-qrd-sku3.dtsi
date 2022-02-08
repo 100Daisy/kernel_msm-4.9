@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, 2019 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -12,7 +12,6 @@
  */
 
 #include "msm8953-qrd.dtsi"
-#include "msm8953-camera-sensor-qrd.dtsi"
 
 &spmi_bus {
 	qcom,pmi8950@3 {
@@ -25,8 +24,8 @@
 
 			lab_regulator: qcom,lab@de00 {
 				/delete-property/
-					qcom,qpnp-lab-use-default-voltage;
-				qcom,qpnp-lab-init-lcd-voltage = <5700000>;
+					qcom,qpnp-ibb-use-default-voltage;
+				qcom,qpnp-ibb-init-lcd-voltage = <5700000>;
 			};
 		};
 	};
@@ -55,25 +54,8 @@
 	};
 };
 
-&dsi_panel_pwr_supply {
-		qcom,panel-supply-entry@2 {
-		reg = <2>;
-		qcom,supply-name = "lab";
-		qcom,supply-min-voltage = <4600000>;
-		qcom,supply-max-voltage = <6000000>;
-		qcom,supply-enable-load = <100000>;
-		qcom,supply-disable-load = <100>;
-	};
-
-	qcom,panel-supply-entry@3 {
-		reg = <3>;
-		qcom,supply-name = "ibb";
-		qcom,supply-min-voltage = <4600000>;
-		qcom,supply-max-voltage = <6000000>;
-		qcom,supply-enable-load = <100000>;
-		qcom,supply-disable-load = <100>;
-		qcom,supply-post-on-sleep = <10>;
-	};
+&dsi_r69006_1080p_cmd {
+	qcom,esd-check-enabled;
 };
 
 &mdss_mdp {
@@ -108,9 +90,71 @@
 
 &dsi_r69006_1080p_cmd {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-	qcom,esd-check-enabled;
 };
 
 &dsi_r69006_1080p_video {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
+};
+
+&int_codec {
+	status = "disabled";
+};
+
+&pm8953_diangu_dig {
+	status = "disabled";
+};
+
+&pm8953_diangu_analog {
+	status = "disabled";
+};
+
+&ext_codec {
+	status = "ok";
+	qcom,model = "msm8953-sku3-tasha-snd-card";
+
+	qcom,audio-routing =
+		"AIF4 VI", "MCLK",
+		"RX_BIAS", "MCLK",
+		"DMIC0", "MIC BIAS1",
+		"MIC BIAS1", "Digital Mic0",
+		"AMIC2", "MIC BIAS2",
+		"MIC BIAS2", "Headset Mic",
+		"DMIC2", "MIC BIAS3",
+		"MIC BIAS3", "Digital Mic2",
+		"MIC BIAS1", "MICBIAS_REGULATOR",
+		"MIC BIAS2", "MICBIAS_REGULATOR",
+		"MIC BIAS3", "MICBIAS_REGULATOR",
+		"SpkrLeft IN", "SPK1 OUT";
+
+	qcom,cdc-us-euro-gpios;
+
+	qcom,msm-mbhc-hphl-swh = <1>;
+
+	qcom,wsa-max-devs = <1>;
+	qcom,wsa-devs = <&wsa881x_211>, <&wsa881x_213>;
+	qcom,wsa-aux-dev-prefix = "SpkrLeft", "SpkrLeft";
+};
+
+&slim_msm {
+	status = "ok";
+};
+
+&dai_slim {
+	status = "ok";
+};
+
+&wcd9xxx_intc {
+	status = "ok";
+};
+
+&clock_audio {
+	status = "ok";
+};
+
+&wcd9335 {
+	status = "ok";
+};
+
+&wcd_rst_gpio {
+	status = "ok";
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -76,7 +76,7 @@
 		interrupts = <0 51 0>;
 		interrupt-names = "csid";
 		qcom,csi-vdd-voltage = <1200000>;
-		qcom,mipi-csi-vdd-supply = <&pm8937_l2>;
+		qcom,mipi-csi-vdd-supply = <&pm8917_l2>;
 		clocks = <&clock_gcc clk_gcc_camss_top_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_ispif_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_csi0_ahb_clk>,
@@ -101,7 +101,7 @@
 		interrupts = <0 52 0>;
 		interrupt-names = "csid";
 		qcom,csi-vdd-voltage = <1200000>;
-		qcom,mipi-csi-vdd-supply = <&pm8937_l2>;
+		qcom,mipi-csi-vdd-supply = <&pm8917_l2>;
 		clocks = <&clock_gcc clk_gcc_camss_top_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_ispif_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_csi1_ahb_clk>,
@@ -126,7 +126,7 @@
 		interrupts = <0 153 0>;
 		interrupt-names = "csid";
 		qcom,csi-vdd-voltage = <1200000>;
-		qcom,mipi-csi-vdd-supply = <&pm8937_l2>;
+		qcom,mipi-csi-vdd-supply = <&pm8917_l2>;
 		clocks = <&clock_gcc clk_gcc_camss_top_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_ispif_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_csi2_ahb_clk>,
@@ -231,9 +231,9 @@
 		qos-regs = <0x2c4 0x2c8 0x2cc 0x2d0 0x2d4 0x2d8
 			0x2dc 0x2e0>;
 		qos-settings = <0xaa55aa55
-			0xaa55aa55 0xaa55aa55
-			0xaa55aa55 0xaa55aa55
-			0xaa55aa55 0xaa55aa55
+			0xaa55aa55	0xaa55aa55
+			0xaa55aa55	0xaa55aa55
+			0xaa55aa55	0xaa55aa55
 			0xaa55aa55>;
 		vbif-entries = <1>;
 		vbif-regs = <0x124>;
@@ -243,14 +243,14 @@
 			0x99c 0x9a0 0x9a4 0x9a8 0x9ac 0x9b0
 			0x9b4 0x9b8 0x9bc 0x9c0 0x9c4 0x9c8>;
 		ds-settings = <0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0x00000110>;
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0x00000110>;
 		max-clk-nominal = <400000000>;
 		max-clk-turbo = <432000000>;
 	};
@@ -281,9 +281,9 @@
 		qos-regs = <0x2c4 0x2c8 0x2cc 0x2d0 0x2d4 0x2d8
 			0x2dc 0x2e0>;
 		qos-settings = <0xaa55aa55
-			0xaa55aa55 0xaa55aa55
-			0xaa55aa55 0xaa55aa55
-			0xaa55aa55 0xaa55aa55
+			0xaa55aa55	0xaa55aa55
+			0xaa55aa55	0xaa55aa55
+			0xaa55aa55	0xaa55aa55
 			0xaa55aa55>;
 		vbif-entries = <1>;
 		vbif-regs = <0x124>;
@@ -293,14 +293,14 @@
 			0x99c 0x9a0 0x9a4 0x9a8 0x9ac 0x9b0
 			0x9b4 0x9b8 0x9bc 0x9c0 0x9c4 0x9c8>;
 		ds-settings = <0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0xcccc1111
-			0xcccc1111 0x00000110>;
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0xcccc1111
+			0xcccc1111	0x00000110>;
 		max-clk-nominal = <400000000>;
 		max-clk-turbo = <432000000>;
 	};
@@ -314,28 +314,28 @@
 		status = "ok";
 		compatible = "qcom,msm-cam-smmu";
 		msm_cam_smmu_cb1: msm_cam_smmu_cb1 {
-			compatible = "qcom,msm-cam-smmu-cb";
-			iommus = <&apps_iommu 0x400 0x00>,
-				<&apps_iommu 0x2400 0x00>;
+			compatible = "qcom,qsmmu-cam-cb";
+			iommus = <&apps_iommu 0x400>,
+				<&apps_iommu 0x2400>;
 			label = "vfe";
 			qcom,scratch-buf-support;
 		};
 
 		msm_cam_smmu_cb2: msm_cam_smmu_cb2 {
-			compatible = "qcom,msm-cam-smmu-cb";
+			compatible = "qcom,qsmmu-cam-cb";
 			label = "vfe_secure";
 			qcom,secure-context;
 		};
 
 		msm_cam_smmu_cb3: msm_cam_smmu_cb3 {
-			compatible = "qcom,msm-cam-smmu-cb";
-			iommus = <&apps_iommu 0x1c00 0x00>;
+			compatible = "qcom,qsmmu-cam-cb";
+			iommus = <&apps_iommu 0x1c00>;
 			label = "cpp";
 		};
 
 		msm_cam_smmu_cb4: msm_cam_smmu_cb4 {
-			compatible = "qcom,msm-cam-smmu-cb";
-			iommus = <&apps_iommu 0x1800 0x00>;
+			compatible = "qcom,qsmmu-cam-cb";
+			iommus = <&apps_iommu 0x1800>;
 			label = "jpeg_enc0";
 		};
 	};
@@ -383,30 +383,26 @@
 		cell-index = <0>;
 		compatible = "qcom,cpp";
 		reg = <0x1b04000 0x100>,
-			<0x1b80000 0x200>,
-			<0x1b18000 0x018>,
+			<0x1b80000 0x3000>,
+			<0x1b18000 0x4000>,
 			<0x1858078 0x4>;
 		reg-names = "cpp", "cpp_vbif", "cpp_hw", "camss_cpp";
 		interrupts = <0 49 0>;
 		interrupt-names = "cpp";
 		vdd-supply = <&gdsc_cpp>;
 		qcom,vdd-names = "vdd";
-		clocks = <&clock_gcc clk_gcc_camss_ispif_ahb_clk>,
+		clocks = <&clock_gcc clk_gcc_camss_top_ahb_clk>,
 			<&clock_gcc clk_cpp_clk_src>,
-			<&clock_gcc clk_gcc_camss_top_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_cpp_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_cpp_axi_clk>,
 			<&clock_gcc clk_gcc_camss_cpp_clk>,
 			<&clock_gcc clk_gcc_camss_micro_ahb_clk>,
 			<&clock_gcc clk_gcc_camss_ahb_clk>;
-		clock-names = "ispif_ahb_clk", "cpp_core_clk",
-			"camss_top_ahb_clk", "camss_vfe_cpp_ahb_clk",
-			"camss_vfe_cpp_axi_clk", "camss_vfe_cpp_clk",
-			"micro_iface_clk", "camss_ahb_clk";
-		qcom,clock-rates = <61540000 180000000 0 0 0 180000000 0 0>;
+		clock-names = "camss_top_ahb_clk", "cpp_core_clk",
+			"camss_vfe_cpp_ahb_clk", "camss_vfe_cpp_axi_clk",
+			"camss_vfe_cpp_clk","micro_iface_clk", "camss_ahb_clk";
+		qcom,clock-rates = <0 180000000 0 0 180000000 0 0>;
 		qcom,min-clock-rate = <133000000>;
-		resets = <&clock_gcc GCC_CAMSS_MICRO_BCR>;
-		reset-names = "micro_iface_reset";
 		qcom,bus-master = <1>;
 		qcom,msm-bus,name = "msm_camera_cpp";
 		qcom,msm-bus,num-cases = <2>;
@@ -415,7 +411,6 @@
 			<106 512 0 0>,
 			<106 512 0 0>;
 		qcom,msm-bus-vector-dyn-vote;
-		qcom,micro-reset;
 		qcom,cpp-fw-payload-info {
 			qcom,stripe-base = <156>;
 			qcom,plane-base = <141>;
@@ -473,6 +468,7 @@
 		i2c_freq_1Mhz: qcom,i2c_fast_plus_mode {
 			status = "disabled";
 		};
+
 	};
 };
 

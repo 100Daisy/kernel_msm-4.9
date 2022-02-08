@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2017, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -53,6 +53,10 @@
 	status = "okay";
 };
 
+&dai_slim {
+	status = "okay";
+};
+
 &wcd9xxx_intc {
 	status = "okay";
 };
@@ -63,7 +67,7 @@
 
 &wcd9335 {
 	status = "okay";
-	cdc-vdd-mic-bias-supply = <&pm8937_l9>;
+	cdc-vdd-mic-bias-supply = <&pm8917_l9>;
 	qcom,cdc-vdd-mic-bias-voltage = <3300000 3300000>;
 	qcom,cdc-vdd-mic-bias-current = <15000>;
 };
@@ -225,6 +229,22 @@
 };
 
 &int_codec {
+	status = "disabled";
+};
+
+&pm8937_cajon_dig {
+	status = "disabled";
+};
+
+&pm8937_cajon_analog {
+	status = "disabled";
+};
+
+&wsa881x_i2c_e {
+	status = "disabled";
+};
+
+&wsa881x_i2c_44 {
 	status = "disabled";
 };
 

@@ -37,9 +37,7 @@
 		qcom,mdss-dsi-underflow-color = <0xff>;
 		qcom,mdss-dsi-border-color = <0>;
 		qcom,mdss-dsi-on-command = [
-			/*exit sleep mode and delay 120ms*/
 			39 01 00 00 78 00 02 11 00
-			/*set display on and delay 20ms*/
 			39 01 00 00 14 00 02 29 00
 		];
 		qcom,mdss-dsi-off-command = [05 01 00 00 96 00 02 28 00
@@ -55,8 +53,9 @@
 		qcom,mdss-dsi-lane-1-state;
 		qcom,mdss-dsi-lane-2-state;
 		qcom,mdss-dsi-lane-3-state;
-		qcom,mdss-dsi-panel-timings = [9b 22 18 00 4a 4e 1c 26
-			1d 03 04 00];
+		qcom,mdss-dsi-panel-timings = [
+			9B 22 18 00 4A 4E 1C 26 1D 03 04 00
+		];
 		qcom,mdss-dsi-t-clk-post = <0x04>;
 		qcom,mdss-dsi-t-clk-pre = <0x1f>;
 		qcom,mdss-dsi-bl-min-level = <2>;
@@ -65,6 +64,9 @@
 		qcom,mdss-dsi-dma-trigger = "trigger_sw";
 		qcom,mdss-dsi-mdp-trigger = "none";
 		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+		//qcom,mdss-dsi-bl-pmic-pwm-frequency = <100>;
+		//qcom,mdss-dsi-bl-pmic-bank-select = <0>;
+		//qcom,mdss-dsi-pwm-gpio = <&pm8937_gpios 2 0>;
 		qcom,mdss-pan-physical-width-dimension = <107>;
 		qcom,mdss-pan-physical-height-dimension = <172>;
 		qcom,mdss-dsi-reset-sequence = <1 10>, <0 5>, <1 50>;

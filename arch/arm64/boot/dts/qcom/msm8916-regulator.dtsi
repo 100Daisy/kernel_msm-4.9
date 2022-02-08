@@ -1,4 +1,4 @@
-/* Copyright (c) 2013-2015, 2018, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2013-2015, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -10,7 +10,21 @@
  * GNU General Public License for more details.
  */
 
+/* SPM controlled regulators */
+&spmi_bus {
+	qcom,pm8916@1 {
+		pm8916_s2: spm-regulator@1700 {
+			compatible = "qcom,spm-regulator";
+			regulator-name = "8916_s2";
+			reg = <0x1700 0x100>;
+			regulator-min-microvolt = <1050000>;
+			regulator-max-microvolt = <1350000>;
+		};
+	};
+};
+
 /* CPR controlled regulator */
+
 &soc {
 	mem_acc_vreg_corner: regulator@1946000 {
 		compatible = "qcom,mem-acc-regulator";
@@ -30,7 +44,7 @@
 
 	apc_vreg_corner: regulator@b018000 {
 		compatible = "qcom,cpr-regulator";
-		reg = <0xb018000 0x1000>, <0xb011064 0x4>, <0x58000 0x1000>;
+		reg = <0xb018000 0x1000>, <0xb011064 4>, <0x58000 0x1000>;
 		reg-names = "rbcpr", "rbcpr_clk", "efuse_addr";
 		interrupts = <0 15 0>;
 		regulator-name = "apc_corner";
@@ -97,18 +111,6 @@
 	};
 };
 
-/* SPM controlled regulators */
-&spmi_bus {
-	pm8916@1 {
-		pm8916_s2: spm-regulator@1700 {
-			compatible = "qcom,spm-regulator";
-			regulator-name = "8916_s2";
-			reg = <0x1700 0x100>;
-			regulator-min-microvolt = <1050000>;
-			regulator-max-microvolt = <1350000>;
-		};
-	};
-};
 
 /* RPM controlled regulators */
 &rpm_bus {
@@ -140,12 +142,6 @@
 			regulator-max-microvolt = <7>;
 			qcom,use-voltage-floor-corner;
 			qcom,always-send-voltage;
-		};
-		pm8916_cx_cdev: regulator-cx-cdev {
-			compatible = "qcom,regulator-cooling-device";
-			regulator-cdev-supply = <&pm8916_s1_floor_corner>;
-			regulator-levels = <5 1>;
-			#cooling-cells = <2>;
 		};
 	};
 
@@ -214,7 +210,7 @@
 			regulator-min-microvolt = <1>;
 			regulator-max-microvolt = <7>;
 			qcom,use-voltage-corner;
-			qcom,init-voltage-corner = <1>;
+			qcom,init-voltage = <1>;
 		};
 	};
 

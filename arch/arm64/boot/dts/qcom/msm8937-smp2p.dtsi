@@ -1,4 +1,4 @@
-/* Copyright (c) 2015, 2018 The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -156,21 +156,6 @@
 	qcom,smp2pgpio_test_smp2p_2_out {
 		compatible = "qcom,smp2pgpio_test_smp2p_2_out";
 		gpios = <&smp2pgpio_smp2p_2_out 0 0>;
-	};
-
-	smp2pgpio_sleepstate_2_out: qcom,smp2pgpio-sleepstate-gpio-2-out {
-		compatible = "qcom,smp2pgpio";
-		qcom,entry-name = "sleepstate";
-		qcom,remote-pid = <2>;
-		gpio-controller;
-		#gpio-cells = <2>;
-		interrupt-controller;
-		#interrupt-cells = <2>;
-	};
-
-	qcom,smp2pgpio-sleepstate-2-out {
-		compatible = "qcom,smp2pgpio-sleepstate-out";
-		gpios = <&smp2pgpio_sleepstate_2_out 0 0>;
 	};
 
 	/* ssr - inbound entry from mss. */

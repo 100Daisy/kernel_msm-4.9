@@ -1,4 +1,4 @@
-/* Copyright (c) 2018,2020, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -16,7 +16,6 @@
 		qcom,pas-id = <13>;
 		qcom,firmware-name = "a506_zap";
 		memory-region = <&gpu_mem>;
-		qcom,mas-crypto = <&mas_crypto>;
 		clocks = <&clock_gcc clk_gcc_crypto_clk>,
 		<&clock_gcc clk_gcc_crypto_ahb_clk>,
 		<&clock_gcc clk_gcc_crypto_axi_clk>,
@@ -68,7 +67,7 @@
 		qcom,id = <0>;
 		qcom,chipid = <0x05000600>;
 
-		qcom,initial-pwrlevel = <4>;
+		qcom,initial-pwrlevel = <7>;
 
 		qcom,idle-timeout = <80>; //msecs
 		qcom,deep-nap-timeout = <100>; //msecs
@@ -76,7 +75,7 @@
 
 		qcom,highest-bank-bit = <14>;
 
-		qcom,snapshot-size = <0x200000>; //bytes
+		qcom,snapshot-size = <1048576>; //bytes
 
 		clocks = <&clock_gcc_gfx clk_gcc_oxili_gfx3d_clk>,
 			<&clock_gcc_gfx clk_gcc_oxili_ahb_clk>,
@@ -124,6 +123,14 @@
 		qcom,gpu-quirk-dp2clockgating-disable;
 		qcom,gpu-quirk-lmloadkill-disable;
 
+		/* Trace bus */
+		coresight-id = <67>;
+		coresight-name = "coresight-gfx";
+		coresight-nr-inports = <0>;
+		coresight-outports = <0>;
+		coresight-child-list = <&funnel_mm>;
+		coresight-child-ports = <6>;
+
 		/* Enable context aware freq. scaling */
 		qcom,enable-ca-jump;
 
@@ -132,9 +139,6 @@
 
 		/* Context aware jump target power level */
 		qcom,ca-target-pwrlevel = <3>;
-
-		/* Enable gpu cooling device */
-		#cooling-cells = <2>;
 
 		/* GPU Mempools */
 		qcom,gpu-mempools {
@@ -156,25 +160,6 @@
 			};
 		};
 
-		qcom,gpu-coresights {
-			#address-cells = <1>;
-			#size-cells = <0>;
-			compatible = "qcom,gpu-coresight";
-
-			/* Trace bus */
-			qcom,gpu-coresight@0 {
-				reg = <0>;
-				coresight-name = "coresight-gfx";
-				coresight-atid = <67>;
-				port {
-					gfx_out_funnel_mm: endpoint {
-						remote-endpoint =
-						<&funnel_mm_in_gfx>;
-					};
-				};
-			};
-		};
-
 		/* Power levels */
 		qcom,gpu-pwrlevels {
 			#address-cells = <1>;
@@ -182,18 +167,27 @@
 
 			compatible = "qcom,gpu-pwrlevels";
 
-			/* TURBO */
+			/* TURBO+ */
 			qcom,gpu-pwrlevel@0 {
 				reg = <0>;
-				qcom,gpu-freq = <650000000>;
+				qcom,gpu-freq = <700000000>;
 				qcom,bus-freq = <10>;
 				qcom,bus-min = <10>;
 				qcom,bus-max = <10>;
 			};
 
-			/* NOM+ */
+			/* TURBO */
 			qcom,gpu-pwrlevel@1 {
 				reg = <1>;
+				qcom,gpu-freq = <650000000>;
+				qcom,bus-freq = <10>;
+				qcom,bus-min = <9>;
+				qcom,bus-max = <10>;
+			};
+
+			/* NOM+ */
+			qcom,gpu-pwrlevel@2 {
+				reg = <2>;
 				qcom,gpu-freq = <560000000>;
 				qcom,bus-freq = <10>;
 				qcom,bus-min = <8>;
@@ -201,8 +195,8 @@
 			};
 
 			/* NOM */
-			qcom,gpu-pwrlevel@2 {
-				reg = <2>;
+			qcom,gpu-pwrlevel@3 {
+				reg = <3>;
 				qcom,gpu-freq = <510000000>;
 				qcom,bus-freq = <9>;
 				qcom,bus-min = <6>;
@@ -210,8 +204,8 @@
 			};
 
 			/* SVS+ */
-			qcom,gpu-pwrlevel@3 {
-				reg = <3>;
+			qcom,gpu-pwrlevel@4 {
+				reg = <4>;
 				qcom,gpu-freq = <400000000>;
 				qcom,bus-freq = <7>;
 				qcom,bus-min = <5>;
@@ -219,8 +213,8 @@
 			};
 
 			/* SVS */
-			qcom,gpu-pwrlevel@4 {
-				reg = <4>;
+			qcom,gpu-pwrlevel@5 {
+				reg = <5>;
 				qcom,gpu-freq = <320000000>;
 				qcom,bus-freq = <4>;
 				qcom,bus-min = <2>;
@@ -228,8 +222,8 @@
 			};
 
 		       /* Low SVS */
-			qcom,gpu-pwrlevel@5 {
-				reg = <5>;
+			qcom,gpu-pwrlevel@6 {
+				reg = <6>;
 				qcom,gpu-freq = <216000000>;
 				qcom,bus-freq = <1>;
 				qcom,bus-min = <1>;
@@ -237,16 +231,16 @@
 			};
 
 		       /* Min SVS */
-			qcom,gpu-pwrlevel@6 {
-				reg = <6>;
+			qcom,gpu-pwrlevel@7 {
+				reg = <7>;
 				qcom,gpu-freq = <133300000>;
 				qcom,bus-freq = <1>;
 				qcom,bus-min = <1>;
 				qcom,bus-max = <4>;
 			};
 			/* XO */
-			qcom,gpu-pwrlevel@7 {
-				reg = <7>;
+			qcom,gpu-pwrlevel@8 {
+				reg = <8>;
 				qcom,gpu-freq = <19200000>;
 				qcom,bus-freq = <0>;
 				qcom,bus-min = <0>;

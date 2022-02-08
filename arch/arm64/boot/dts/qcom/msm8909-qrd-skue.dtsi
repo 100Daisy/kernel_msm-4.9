@@ -29,8 +29,7 @@
 			vdd-supply = <&pm8909_l17>;
 			vcc_i2c-supply = <&pm8909_l6>;
 			/* pins used by touchscreen */
-			pinctrl-names = "pmx_ts_active","pmx_ts_suspend",
-					"pmx_ts_release";
+			pinctrl-names = "pmx_ts_active","pmx_ts_suspend","pmx_ts_release";
 			pinctrl-0 = <&ts_int_active &ts_reset_active>;
 			pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
 			pinctrl-2 = <&ts_release>;
@@ -223,7 +222,7 @@
 		asoc-cpu = <&dai_pri_auxpcm>, <&dai_hdmi>,
 				<&dai_mi2s0>, <&dai_mi2s1>,
 				<&dai_mi2s2>, <&dai_mi2s3>,
-				<&dai_mi2s4>, <&dai_mi2s5>,
+				<&dai_mi2s5>, <&dai_mi2s6>,
 				<&sb_0_rx>, <&sb_0_tx>, <&sb_1_rx>, <&sb_1_tx>,
 				<&sb_3_rx>, <&sb_3_tx>, <&sb_4_rx>, <&sb_4_tx>,
 				<&bt_sco_rx>, <&bt_sco_tx>,
@@ -322,14 +321,6 @@
 
 &mdss_mdp {
 	qcom,mdss-pref-prim-intf = "dsi";
-};
-
-&vendor_fstab {
-	status = "ok";
-};
-
-&system_fstab {
-	status = "disabled";
 };
 
 &dsi_hx8379c_fwvga_video {
@@ -451,7 +442,7 @@
 
 &pm8909_vadc {
 	chan@30 {
-		qcom,scale-function = <13>;
+		qcom,scale-function = <14>;
 	};
 };
 

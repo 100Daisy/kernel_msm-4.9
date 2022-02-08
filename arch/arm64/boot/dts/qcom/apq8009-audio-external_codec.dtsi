@@ -1,4 +1,5 @@
-/* Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
+/*
+ * Copyright (c) 2015-2017, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -19,12 +20,6 @@
 };
 
 &soc {
-	qcom,msm-audio-apr {
-		compatible = "qcom,msm-audio-apr";
-		msm_audio_apr_dummy {
-			compatible = "qcom,msm-audio-apr-dummy";
-		};
-	};
 	sound-9335 {
 		compatible = "qcom,apq8009-audio-i2s-codec";
 		qcom,model = "apq8009-tashalite-snd-card";
@@ -81,11 +76,10 @@
 				<&loopback>, <&compress>, <&hostless>,
 				<&afe>, <&lsm>, <&routing>, <&cpe>, <&lpa>;
 		asoc-platform-names = "msm-pcm-dsp.0", "msm-pcm-dsp.1",
-				"msm-voip-dsp", "msm-pcm-voice",
-				"msm-pcm-loopback", "msm-compress-dsp",
-				"msm-pcm-hostless", "msm-pcm-afe",
-				"msm-lsm-client", "msm-pcm-routing",
-				"msm-cpe-lsm", "msm-pcm-lpa";
+				"msm-voip-dsp", "msm-pcm-voice", "msm-pcm-loopback",
+				"msm-compress-dsp", "msm-pcm-hostless", "msm-pcm-afe",
+				"msm-lsm-client", "msm-pcm-routing", "msm-cpe-lsm",
+				"msm-pcm-lpa";
 		asoc-cpu =  <&dai_pri_auxpcm>, <&dai_hdmi>,<&dai_mi2s0>,
 				<&dai_mi2s2>, <&dai_mi2s3>,
 				<&sb_0_rx>, <&sb_0_tx>, <&sb_1_rx>, <&sb_1_tx>,
@@ -240,17 +234,16 @@
 		qcom,msm-cpudai-tdm-group-num-ports = <1>;
 		qcom,msm-cpudai-tdm-group-port-id = <36864>;
 		qcom,msm-cpudai-tdm-clk-rate = <12288000>;
-		qcom,msm-cpudai-tdm-clk-internal = <1>;
-		qcom,msm-cpudai-tdm-sync-mode = <0>;
-		qcom,msm-cpudai-tdm-sync-src = <1>;
-		qcom,msm-cpudai-tdm-data-out = <0>;
-		qcom,msm-cpudai-tdm-invert-sync = <0>;
-		qcom,msm-cpudai-tdm-data-delay = <1>;
 		qcom,msm-cpudai-tdm-sec-port-enable;
 		qcom,msm-cpudai-tdm-clk-attribute = /bits/ 16 <1>;
 		dai_pri_tdm_rx_0: qcom,msm-dai-q6-tdm-pri-rx-0 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36864>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <1>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <1>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 	};
@@ -261,26 +254,17 @@
 		qcom,msm-cpudai-tdm-group-num-ports = <1>;
 		qcom,msm-cpudai-tdm-group-port-id = <36865>;
 		qcom,msm-cpudai-tdm-clk-rate = <12288000>;
-		qcom,msm-cpudai-tdm-clk-internal = <1>;
-		qcom,msm-cpudai-tdm-sync-mode = <0>;
-		qcom,msm-cpudai-tdm-sync-src = <1>;
-		qcom,msm-cpudai-tdm-data-out = <0>;
-		qcom,msm-cpudai-tdm-invert-sync = <0>;
-		qcom,msm-cpudai-tdm-data-delay = <1>;
 		qcom,msm-cpudai-tdm-sec-port-enable;
 		qcom,msm-cpudai-tdm-clk-attribute = /bits/ 16 <1>;
 		dai_pri_tdm_tx_0: qcom,msm-dai-q6-tdm-pri-tx-0 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36865>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <1>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <1>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 	};
-};
-
-&wcd9xxx_intc {
-	status = "okay";
-};
-
-&clock_audio {
-	status = "okay";
 };

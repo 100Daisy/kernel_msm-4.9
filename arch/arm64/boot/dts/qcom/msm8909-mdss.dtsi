@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016,2018, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2014-2016,2018 The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -28,21 +28,6 @@
 		clock-names = "iface_clk", "bus_clk", "core_clk_src",
 				"core_clk", "vsync_clk";
 
-		qcom,regs-dump-mdp =    <0x0300 0x0358>,
-					<0x10000 0x101E0>,
-					<0x20004 0x0020044>,
-					<0x90000 0x90074>;
-		qcom,regs-dump-names-mdp =      "MDP_SYNC",
-						"PPP","PPP_FETCH",
-						"DMA_P";
-
-		qcom,regs-dump-vbif =   <0x0004 0x0010>,
-					<0x0194 0x01b0>,
-					<0x0200 0x020c>;
-
-		qcom,regs-dump-names-vbif =     "VBIF_CLK",
-						"VBIF_ERR","VBIF_XIN_HALT";
-
 		mdss_fb0: qcom,mdss_fb_primary {
 			cell-index = <0>;
 			compatible = "qcom,mdss-fb";
@@ -53,11 +38,9 @@
 
 		smmu_mdp_unsec: qcom,smmu_mdp_unsec_cb {
 			compatible = "qcom,smmu_mdp_unsec";
-			iommus = <&apps_iommu 0xC00 0>; /* For NS ctx bank */
 		};
 		smmu_mdp_sec: qcom,smmu_mdp_sec_cb {
 			compatible = "qcom,smmu_mdp_sec";
-			iommus = <&apps_iommu 0xC01 0>; /* For SEC Ctx Bank */
 		};
 	};
 
@@ -68,8 +51,8 @@
 		#size-cells = <1>;
 		qcom,mdss-fb-map-prim = <&mdss_fb0>;
 		gdsc-supply = <&gdsc_mdss>;
-		vdda-supply = <&pm660_l2>;
-		vddio-supply = <&pm660_l6>;
+		vdda-supply = <&pm8909_l2>;
+		vddio-supply = <&pm8909_l6>;
 
 		/* Bus Scale Settings */
 		qcom,msm-bus,name = "mdss_dsi";
@@ -150,8 +133,8 @@
 			interrupts = <0 80 0>;
 
 			qcom,mdss-mdp = <&mdss_mdp>;
-			vdd-supply = <&pm660_l17>;
-			vddio-supply = <&pm660_l6>;
+			vdd-supply = <&pm8909_l17>;
+			vddio-supply = <&pm8909_l6>;
 
 			clocks = <&clock_gcc_mdss clk_gcc_mdss_byte0_clk>,
 				 <&clock_gcc_mdss clk_gcc_mdss_pclk0_clk>,
@@ -162,10 +145,8 @@
 
 			qcom,platform-strength-ctrl = [ff 06];
 			qcom,platform-bist-ctrl = [00 00 b1 ff 00 00];
-			qcom,platform-regulator-settings =
-					[00 01 01 00 20 07 00];
-			qcom,platform-lane-config =
-				[00 00 00 00 00 00 00 01 97
+			qcom,platform-regulator-settings = [00 01 01 00 20 07 00];
+			qcom,platform-lane-config = [00 00 00 00 00 00 00 01 97
 				00 00 00 00 05 00 00 01 97
 				00 00 00 00 0a 00 00 01 97
 				00 00 00 00 0f 00 00 01 97

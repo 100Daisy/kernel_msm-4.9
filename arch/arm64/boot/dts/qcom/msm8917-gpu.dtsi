@@ -1,4 +1,4 @@
-/* Copyright (c) 2018, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015-2017, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -55,6 +55,7 @@
 		qcom,initial-pwrlevel = <3>;
 
 		qcom,idle-timeout = <80>; //msecs
+		qcom,deep-nap-timeout = <100>; //msecs
 		qcom,strtstp-sleepwake;
 		qcom,gpu-bimc-interface-clk-freq = <400000000>; //In Hz
 
@@ -94,11 +95,19 @@
 		/* GDSC oxili regulators */
 		vdd-supply = <&gdsc_oxili_gx>;
 
+		/* IOMMU Data */
+		iommu = <&gfx_iommu>;
+
 		/* CPU latency parameter */
 		qcom,pm-qos-active-latency = <651>;
 
-		/* Enable gpu cooling device */
-		#cooling-cells = <2>;
+		/* Trace bus */
+		coresight-id = <67>;
+		coresight-name = "coresight-gfx";
+		coresight-nr-inports = <0>;
+		coresight-outports = <0>;
+		coresight-child-list = <&funnel_mm>;
+		coresight-child-ports = <6>;
 
 		/* Power levels */
 		qcom,gpu-pwrlevels {
@@ -180,7 +189,6 @@
 		qcom,retention;
 		gfx3d_user: gfx3d_user {
 			compatible = "qcom,smmu-kgsl-cb";
-			iommus = <&gfx_iommu 0>;
 			qcom,gpu-offset = <0xa000>;
 		};
 	};

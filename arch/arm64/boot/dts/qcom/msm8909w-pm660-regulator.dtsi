@@ -52,13 +52,6 @@
 			qcom,init-voltage = <1>;
 			qcom,use-voltage-corner;
 		};
-
-		pm660_cx_cdev: regulator-cx-cdev {
-			compatible = "qcom,regulator-cooling-device";
-			regulator-cdev-supply = <&pm660_s2_floor_corner>;
-			regulator-levels = <5 1>;
-			#cooling-cells = <2>;
-		};
 	};
 
 	/* MX supply */
@@ -266,9 +259,9 @@
 	rpm-regulator-ldoa15 {
 		status = "okay";
 		pm660_l15: regulator-l15 {
-			regulator-min-microvolt = <3000000>;
-			regulator-max-microvolt = <3000000>;
-			qcom,init-voltage = <3000000>;
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			qcom,init-voltage = <3300000>;
 			status = "okay";
 		};
 	};
@@ -311,6 +304,16 @@
 			qcom,init-voltage = <2900000>;
 			status = "okay";
 		};
+	};
+};
+
+&pm660_charger {
+	smb2_vbus: qcom,smb2-vbus {
+		regulator-name = "smb2-vbus";
+	};
+
+	smb2_vconn: qcom,smb2-vconn {
+		regulator-name = "smb2-vconn";
 	};
 };
 

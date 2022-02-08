@@ -9,15 +9,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-#include "msm-audio-lpass-msm8909.dtsi"
 
 &soc {
-	qcom,msm-audio-apr {
-		compatible = "qcom,msm-audio-apr";
-		msm_audio_apr_dummy {
-			compatible = "qcom,msm-audio-apr-dummy";
-		};
-	};
 	audio_codec_bg: sound {
 		status = "disabled";
 		compatible = "qcom,msm-bg-audio-codec";
@@ -36,7 +29,6 @@
 		qcom,tdm-audio-intf;
 		qcom,msm-afe-clk-ver = <1>;
 		qcom,split-a2dp;
-		qcom,pri-mi2s-gpios = <&cdc_dmic_gpios>;
 		asoc-platform = <&pcm0>, <&pcm1>, <&pcm2>, <&voip>, <&voice>,
 				<&loopback>, <&compress>, <&hostless>,
 				<&afe>, <&lsm>, <&routing>, <&lpa>,
@@ -50,7 +42,7 @@
 				"msm-voice-svc";
 		asoc-cpu = <&dai_pri_auxpcm>,
 				<&dai_mi2s0>, <&dai_mi2s1>, <&dai_mi2s2>,
-				<&dai_mi2s3>, <&dai_mi2s4>, <&dai_mi2s5>,
+				<&dai_mi2s3>, <&dai_mi2s5>, <&dai_mi2s6>,
 				<&bt_sco_rx>, <&bt_sco_tx>, <&bt_a2dp_rx>,
 				<&int_fm_rx>, <&int_fm_tx>, <&afe_pcm_rx>,
 				<&afe_pcm_tx>, <&afe_proxy_rx>, <&afe_proxy_tx>,
@@ -63,7 +55,7 @@
 		asoc-cpu-names = "msm-dai-q6-auxpcm.1",
 				"msm-dai-q6-mi2s.0", "msm-dai-q6-mi2s.1",
 				"msm-dai-q6-mi2s.2", "msm-dai-q6-mi2s.3",
-				"msm-dai-q6-mi2s.4", "msm-dai-q6-mi2s.6",
+				"msm-dai-q6-mi2s.5", "msm-dai-q6-mi2s.6",
 				"msm-dai-q6-dev.12288", "msm-dai-q6-dev.12289",
 				"msm-dai-q6-dev.12290", "msm-dai-q6-dev.12292",
 				"msm-dai-q6-dev.12293", "msm-dai-q6-dev.224",
@@ -78,12 +70,7 @@
 		asoc-codec = <&stub_codec>;
 		asoc-codec-names = "msm-stub-codec.1";
 	};
-	cdc_dmic_gpios: cdc_dmic_pinctrl {
-		compatible = "qcom,msm-cdc-pinctrl";
-		pinctrl-names = "aud_active", "aud_sleep";
-		pinctrl-0 = <&quat_mi2s_active &quat_mi2s_din_active>;
-		pinctrl-1 = <&quat_mi2s_sleep &quat_mi2s_din_sleep>;
-	};
+
 	pri_tdm_rx: qcom,msm-dai-tdm-pri-rx {
 		compatible = "qcom,msm-dai-tdm";
 		qcom,msm-cpudai-tdm-group-id = <37120>;
@@ -91,32 +78,49 @@
 		qcom,msm-cpudai-tdm-group-port-id = <36864 36866 36868 36870>;
 		qcom,msm-cpudai-tdm-clk-rate = <0>;
 		qcom,msm-cpudai-tdm-afe-ebit-unsupported;
-		qcom,msm-cpudai-tdm-clk-internal = <0>;
-		qcom,msm-cpudai-tdm-sync-mode = <0>;
-		qcom,msm-cpudai-tdm-sync-src = <0>;
-		qcom,msm-cpudai-tdm-data-out = <0>;
-		qcom,msm-cpudai-tdm-invert-sync = <0>;
-		qcom,msm-cpudai-tdm-data-delay = <0>;
 		qcom,msm-cpudai-tdm-sec-port-enable;
 		qcom,msm-cpudai-tdm-clk-attribute = /bits/ 16 <1>;
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&quat_mi2s_active &quat_mi2s_din_active>;
+		pinctrl-1 = <&quat_mi2s_sleep &quat_mi2s_din_sleep>;
 		dai_pri_tdm_rx_0: qcom,msm-dai-q6-tdm-pri-rx-0 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36864>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <0>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <0>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 		dai_pri_tdm_rx_1: qcom,msm-dai-q6-tdm-pri-rx-1 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36866>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <0>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <0>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 		dai_pri_tdm_rx_2: qcom,msm-dai-q6-tdm-pri-rx-2 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36868>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <0>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <0>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 		dai_pri_tdm_rx_3: qcom,msm-dai-q6-tdm-pri-rx-3 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36870>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <0>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <0>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 	};
@@ -128,32 +132,49 @@
 		qcom,msm-cpudai-tdm-group-port-id = <36865 36867 36869 36871>;
 		qcom,msm-cpudai-tdm-clk-rate = <0>;
 		qcom,msm-cpudai-tdm-afe-ebit-unsupported;
-		qcom,msm-cpudai-tdm-clk-internal = <0>;
-		qcom,msm-cpudai-tdm-sync-mode = <0>;
-		qcom,msm-cpudai-tdm-sync-src = <0>;
-		qcom,msm-cpudai-tdm-data-out = <0>;
-		qcom,msm-cpudai-tdm-invert-sync = <0>;
-		qcom,msm-cpudai-tdm-data-delay = <0>;
 		qcom,msm-cpudai-tdm-sec-port-enable;
 		qcom,msm-cpudai-tdm-clk-attribute = /bits/ 16 <1>;
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&quat_mi2s_active &quat_mi2s_din_active>;
+		pinctrl-1 = <&quat_mi2s_sleep &quat_mi2s_din_sleep>;
 		dai_pri_tdm_tx_0: qcom,msm-dai-q6-tdm-pri-tx-0 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36865>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <0>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <0>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 		dai_pri_tdm_tx_1: qcom,msm-dai-q6-tdm-pri-tx-1 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36867>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <0>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <0>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 		dai_pri_tdm_tx_2: qcom,msm-dai-q6-tdm-pri-tx-2 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36869>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <0>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <0>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 		dai_pri_tdm_tx_3: qcom,msm-dai-q6-tdm-pri-tx-3 {
 			compatible = "qcom,msm-dai-q6-tdm";
 			qcom,msm-cpudai-tdm-dev-id = <36871>;
+			qcom,msm-cpudai-tdm-sync-mode = <0>;
+			qcom,msm-cpudai-tdm-sync-src = <0>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <0>;
+			qcom,msm-cpudai-tdm-data-delay = <0>;
 			qcom,msm-cpudai-tdm-data-align = <0>;
 		};
 	};

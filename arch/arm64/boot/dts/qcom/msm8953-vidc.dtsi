@@ -1,4 +1,4 @@
-/* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015-2017, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -75,58 +75,29 @@
 				qcom,cycles-per-mb = <400>;
 			};
 		};
+		qcom,vidc-iommu-domains {
+			qcom,domain-ns {
+				qcom,vidc-domain-phandle = <&venus_domain_ns>;
+				qcom,vidc-buffer-types = <0xfff>;
+			};
 
-		/* MMUs */
-		non_secure_cb {
-			compatible = "qcom,msm-vidc,context-bank";
-			label = "venus_ns";
-			iommus = <&apps_iommu 0x800 0x01>,
-				<&apps_iommu 0x807 0x00>,
-				<&apps_iommu 0x808 0x07>,
-				<&apps_iommu 0x810 0x01>,
-				<&apps_iommu 0x828 0x01>,
-				<&apps_iommu 0x82c 0x01>,
-				<&apps_iommu 0x821 0x10>;
-			buffer-types = <0xfff>;
-			virtual-addr-pool = <0x79000000 0x50000000
-				0xa1000000 0xc9000000>;
-		};
+			qcom,domain-sec-bs {
+				qcom,vidc-domain-phandle =
+					<&venus_domain_sec_bitstream>;
+				qcom,vidc-buffer-types = <0x241>;
+			};
 
-		secure_bitstream_cb {
-			compatible = "qcom,msm-vidc,context-bank";
-			label = "venus_sec_bitstream";
-			 iommus = <&apps_iommu 0x900 0x0>,
-				<&apps_iommu 0x902 0x8>,
-				<&apps_iommu 0x909 0x2>,
-				<&apps_iommu 0x90e 0x0>,
-				<&apps_iommu 0x926 0x0>,
-				<&apps_iommu 0x929 0x2>;
-			buffer-types = <0x241>;
-			virtual-addr-pool = <0x51000000 0x28000000>;
-			qcom,secure-context-bank;
-		};
+			qcom,domain-sec-px {
+				qcom,vidc-domain-phandle =
+					<&venus_domain_sec_pixel>;
+				qcom,vidc-buffer-types = <0x106>;
+			};
 
-		secure_pixel_cb {
-			compatible = "qcom,msm-vidc,context-bank";
-			label = "venus_sec_pixel";
-			iommus = <&apps_iommu 0x904 0x8>,
-				<&apps_iommu 0x910 0x0>,
-				<&apps_iommu 0x92c 0x0>;
-			buffer-types = <0x106>;
-			virtual-addr-pool = <0x29000000 0x28000000>;
-			qcom,secure-context-bank;
-		};
-
-		secure_non_pixel_cb {
-			compatible = "qcom,msm-vidc,context-bank";
-			label = "venus_sec_non_pixel";
-			iommus = <&apps_iommu 0x908 0x0>,
-				<&apps_iommu 0x905 0xa>,
-				<&apps_iommu 0x925 0x8>,
-				<&apps_iommu 0x928 0x0>;
-			buffer-types = <0x480>;
-			virtual-addr-pool = <0x1000000 0x28000000>;
-			qcom,secure-context-bank;
+			qcom,domain-sec-np {
+				qcom,vidc-domain-phandle =
+					<&venus_domain_sec_non_pixel>;
+				qcom,vidc-buffer-types = <0x480>;
+			};
 		};
 
 		/* Buses */
