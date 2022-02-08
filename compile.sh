@@ -39,7 +39,7 @@ build_clang() {
 	CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 }
 
-make O=out deen_defconfig
+make O=out deen_defconfig ARCH=arm64
 build_clang
 
 # Zip up the kernel
