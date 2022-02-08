@@ -23,6 +23,7 @@ mkdir out
 # Compile the kernel
 build_clang() {
     make -j"$(nproc --all)" \
+    ARCH="arm64" \
     O=out \
     CC="ccache clang" \
     CXX="ccache clang++" \
@@ -39,7 +40,7 @@ build_clang() {
 	CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 }
 
-make O=out deen_defconfig ARCH=arm64
+make deen_defconfig ARCH=arm64 O=out 
 build_clang
 
 # Zip up the kernel
