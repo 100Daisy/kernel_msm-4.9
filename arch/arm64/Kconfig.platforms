@@ -128,6 +128,14 @@ config ARCH_QCOM
 	help
 	  This enables support for the ARMv8 based Qualcomm chipsets.
 
+config DEEN_DTB
+	depends on ARCH_QCOM
+	default n
+	bool "Deen DTBs"
+	help
+	  Only include Deen specific DTBs to limit the number that
+	  get built during kernel compilation.
+
 config ARCH_SDM845
 	bool "Enable Support for Qualcomm Technologies Inc. SDM845"
 	depends on ARCH_QCOM
