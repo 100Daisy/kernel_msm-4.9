@@ -463,7 +463,7 @@
 	};
 };
 
-&pm8953_diangu_dig{
+&msm_digital_codec{
 	qcom,cdc-micbias-cfilt-mv = <2750000>;
 };
 
