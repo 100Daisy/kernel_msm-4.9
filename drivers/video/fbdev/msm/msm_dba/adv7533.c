@@ -700,7 +700,7 @@ static int adv7533_gpio_configure(struct adv7533 *pdata, bool on)
 		}
 
 		return 0;
-	}
+	} else {
 	if (gpio_is_valid(pdata->irq_gpio))
 		gpio_free(pdata->irq_gpio);
 	if (gpio_is_valid(pdata->hpd_irq_gpio))
